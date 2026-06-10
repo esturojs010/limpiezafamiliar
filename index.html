@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendario de Limpieza Familiar</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #101820, #1d3557);
+      color: white;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    header h1 {
+      font-size: 32px;
+      margin-bottom: 5px;
+    }
+
+    header p {
+      color: #d6e4ff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    .today-box {
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      border-radius: 18px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .today-box h2 {
+      margin: 0 0 10px;
+    }
+
+    .names {
+      font-size: 26px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .warning {
+      background: rgba(255, 193, 7, 0.18);
+      border: 1px solid rgba(255, 193, 7, 0.6);
+      color: #ffe28a;
+      border-radius: 14px;
+      padding: 15px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 14px;
+    }
+
+    th, td {
+      padding: 14px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    th {
+      background: rgba(255,255,255,0.15);
+    }
+
+    tr.today {
+      background: rgba(0, 198, 255, 0.25);
+    }
+
+    tr.completed {
+      opacity: 0.65;
+      text-decoration: line-through;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 9px 13px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .complete-btn {
+      background: #2ecc71;
+      color: white;
+    }
+
+    .reset-btn {
+      background: #ff4757;
+      color: white;
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    .side-title {
+      font-size: 22px;
+      margin-top: 0;
+    }
+
+    .person {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.1);
+      margin-bottom: 10px;
+      padding: 12px;
+      border-radius: 12px;
+    }
+
+    .badge {
+      background: rgba(255,255,255,0.18);
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 13px;
+    }
+
+    .quote {
+      margin-top: 20px;
+      background: rgba(255,255,255,0.1);
+      padding: 15px;
+      border-radius: 14px;
+      font-style: italic;
+      color: #eaf2ff;
+    }
+
+    .mini {
+      color: #cfe3ff;
+      font-size: 14px;
+    }
+
+    @media (max-width: 850px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      header h1 {
+        font-size: 26px;
+      }
+
+      .names {
+        font-size: 22px;
+      }
+
+      th, td {
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>🧹 Calendario de Limpieza Familiar</h1>
+      <p>Turnos automáticos cada miércoles y sábado</p>
+    </header>
+
+    <div class="grid">
+      <main>
+        <div id="todayBox" class="today-box"></div>
+        <div id="reminderBox" class="warning"></div>
+
+        <div class="card">
+          <h2>📅 Próximos turnos</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Día</th>
+                <th>Responsables</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="scheduleTable"></tbody>
+          </table>
+
+          <button class="reset-btn" onclick="resetCompleted()">Reiniciar completados</button>
+        </div>
+      </main>
+
+      <aside>
+        <div class="card">
+          <h2 class="side-title">👨‍👩‍👧‍👦 Parejas</h2>
+
+          <div class="person">
+            <span>Yoban - Maribel</span>
+            <span class="badge">Equipo 1</span>
+          </div>
+
+          <div class="person">
+            <span>Marco - Estuardo</span>
+            <span class="badge">Equipo 2</span>
+          </div>
+
+          <div class="person">
+            <span>Wilmer - Norma</span>
+            <span class="badge">Equipo 3</span>
+          </div>
+
+          <div class="person">
+            <span>Artemio - Magdalena</span>
+            <span class="badge">Equipo 4</span>
+          </div>
+
+          <div class="quote">
+            “Una casa limpia se siente más tranquila. Gracias por ayudar.” ✨
+          </div>
+
+          <p class="mini">
+            El sistema sigue el patrón de tu hoja: miércoles y sábado, repitiendo las parejas en orden.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const teams = [
+      "Yoban - Maribel",
+      "Marco - Estuardo",
+      "Wilmer - Norma",
+      "Artemio - Magdalena"
+    ];
+
+    const startDate = new Date(2026, 4, 6); 
+    // 6 de mayo 2026 = Yoban - Maribel
+
+    const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+
+    function formatDate(date) {
+      return date.toLocaleDateString("es-US", {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      });
+    }
+
+    function isCleaningDay(date) {
+      return date.getDay() === 3 || date.getDay() === 6;
+    }
+
+    function sameDay(a, b) {
+      return a.getFullYear() === b.getFullYear() &&
+             a.getMonth() === b.getMonth() &&
+             a.getDate() === b.getDate();
+    }
+
+    function getCleaningDates(count) {
+      const dates = [];
+      const date = new Date(startDate);
+
+      while (dates.length < 200) {
+        if (isCleaningDay(date)) {
+          dates.push(new Date(date));
+        }
+        date.setDate(date.getDate() + 1);
+      }
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      return dates.filter(d => d >= today).slice(0, count);
+    }
+
+    function getTeamForDate(date) {
+      let index = 0;
+      const temp = new Date(startDate);
+
+      while (temp <= date) {
+        if (isCleaningDay(temp)) {
+          if (sameDay(temp, date)) {
+            return teams[index % teams.length];
+          }
+          index++;
+        }
+        temp.setDate(temp.getDate() + 1);
+      }
+    }
+
+    function completedKey(date) {
+      return "completed-" + date.toISOString().split("T")[0];
+    }
+
+    function toggleCompleted(dateString) {
+      const key = "completed-" + dateString;
+      const current = localStorage.getItem(key);
+
+      if (current === "yes") {
+        localStorage.removeItem(key);
+      } else {
+        localStorage.setItem(key, "yes");
+      }
+
+      render();
+    }
+
+    function resetCompleted() {
+      if (!confirm("¿Seguro que quieres reiniciar los turnos completados?")) return;
+
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith("completed-")) {
+          localStorage.removeItem(key);
+        }
+      });
+
+      render();
+    }
+
+    function render() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const nextDates = getCleaningDates(12);
+      const todayCleaning = nextDates.find(d => sameDay(d, today));
+      const nextCleaning = nextDates[0];
+
+      const todayBox = document.getElementById("todayBox");
+      const reminderBox = document.getElementById("reminderBox");
+      const table = document.getElementById("scheduleTable");
+
+      if (todayCleaning) {
+        todayBox.innerHTML = `
+          <h2>🧹 Hoy toca limpieza</h2>
+          <div class="names">${getTeamForDate(todayCleaning)}</div>
+          <p>${formatDate(todayCleaning)}</p>
+        `;
+      } else {
+        todayBox.innerHTML = `
+          <h2>✅ Hoy no toca limpieza</h2>
+          <div class="names">Próximo: ${getTeamForDate(nextCleaning)}</div>
+          <p>${formatDate(nextCleaning)}</p>
+        `;
+      }
+
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      const tomorrowCleaning = nextDates.find(d => sameDay(d, tomorrow));
+
+      if (tomorrowCleaning) {
+        reminderBox.innerHTML = `⚠️ Mañana le toca limpieza a: ${getTeamForDate(tomorrowCleaning)}`;
+      } else {
+        reminderBox.innerHTML = `📌 Recordatorio: la limpieza solo es miércoles y sábado.`;
+      }
+
+      table.innerHTML = "";
+
+      nextDates.forEach(date => {
+        const iso = date.toISOString().split("T")[0];
+        const isCompleted = localStorage.getItem("completed-" + iso) === "yes";
+        const tr = document.createElement("tr");
+
+        if (sameDay(date, today)) tr.classList.add("today");
+        if (isCompleted) tr.classList.add("completed");
+
+        tr.innerHTML = `
+          <td>${formatDate(date)}</td>
+          <td>${days[date.getDay()]}</td>
+          <td>${getTeamForDate(date)}</td>
+          <td>
+            <button class="complete-btn" onclick="toggleCompleted('${iso}')">
+              ${isCompleted ? "✅ Completado" : "Marcar ✅"}
+            </button>
+          </td>
+        `;
+
+        table.appendChild(tr);
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>
