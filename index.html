@@ -512,34 +512,42 @@
       });
     }
 
-    function renderTop() {
-      const currentTurn = getCurrentTurnDate();
-      const today = cleanDate(new Date());
-      const displayPeople = getDisplayPeople(currentTurn);
-      const todayBox = document.getElementById("todayBox");
-      const reminderBox = document.getElementById("reminderBox");
+function renderTop() {
+  const currentTurn = getCurrentTurnDate();
+  const today = cleanDate(new Date());
+  const team = getTeamForDate(currentTurn);
+  const cleaned = localStorage.getItem("cleaned-" + isoDate(currentTurn));
 
-      if (sameDay(currentTurn, today)) {
-        todayBox.innerHTML = `
-          <h2>🧹 Hoy toca limpieza</h2>
-          <div class="names">${displayPeople.join(" - ")}</div>
-          <p>${formatDate(currentTurn)}</p>
-        `;
-      } else {
-        todayBox.innerHTML = `
-          <h2>🧹 Último turno pendiente</h2>
-          <div class="names">${displayPeople.join(" - ")}</div>
-          <p>${formatDate(currentTurn)}</p>
-        `;
-      }
+  const todayBox = document.getElementById("todayBox");
+  const reminderBox = document.getElementById("reminderBox");
 
-      const visibleDates = getVisibleDates();
-      const nextTurn = visibleDates[1];
+  if (cleaned) {
+    todayBox.innerHTML = `
+      <h2>✅ Último turno registrado</h2>
+      <div class="names">${cleaned}</div>
+      <p>${formatDate(currentTurn)}</p>
+    `;
+  } else if (sameDay(currentTurn, today)) {
+    todayBox.innerHTML = `
+      <h2>🧹 Hoy toca limpieza</h2>
+      <div class="names">${getDisplayPeople(currentTurn).join(" - ")}</div>
+      <p>${formatDate(currentTurn)}</p>
+    `;
+  } else {
+    todayBox.innerHTML = `
+      <h2>🧹 Último turno pendiente</h2>
+      <div class="names">${team.join(" - ")}</div>
+      <p>${formatDate(currentTurn)}</p>
+    `;
+  }
 
-      if (nextTurn) {
-        reminderBox.innerHTML = `📌 Próximo turno: ${getDisplayPeople(nextTurn).join(" - ")} — ${formatDate(nextTurn)}`;
-      }
-    }
+  const visibleDates = getVisibleDates();
+  const nextTurn = visibleDates[1];
+
+  if (nextTurn) {
+    reminderBox.innerHTML = `📌 Próximo turno: ${getDisplayPeople(nextTurn).join(" - ")} — ${formatDate(nextTurn)}`;
+  }
+}
 
     function renderProducts() {
       const box = document.getElementById("productsList");
