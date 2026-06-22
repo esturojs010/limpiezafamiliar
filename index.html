@@ -6,9 +6,7 @@
   <title>Calendario de Limpieza Familiar</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -16,26 +14,27 @@
       background: linear-gradient(135deg, #101820, #1d3557);
       color: white;
       min-height: 100vh;
-      padding: 20px;
+      padding: 18px;
     }
 
     .container {
-      max-width: 1100px;
+      max-width: 1150px;
       margin: auto;
     }
 
     header {
       text-align: center;
-      margin-bottom: 25px;
+      margin-bottom: 22px;
     }
 
     header h1 {
-      font-size: 32px;
-      margin-bottom: 5px;
+      margin: 0;
+      font-size: 30px;
     }
 
     header p {
-      color: #d6e4ff;
+      color: #d8e8ff;
+      margin-top: 8px;
     }
 
     .grid {
@@ -45,30 +44,28 @@
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
       border-radius: 18px;
-      padding: 20px;
-      backdrop-filter: blur(10px);
+      padding: 18px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      margin-bottom: 18px;
     }
 
-    .today-box {
+    .hero {
       background: linear-gradient(135deg, #00c6ff, #0072ff);
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 20px;
       text-align: center;
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 18px;
     }
 
-    .today-box h2 {
-      margin: 0 0 10px;
-    }
+    .hero h2 { margin: 0 0 10px; }
 
     .names {
-      font-size: 26px;
+      font-size: 25px;
       font-weight: bold;
-      margin: 10px 0;
+      margin: 8px 0;
     }
 
     .warning {
@@ -76,8 +73,8 @@
       border: 1px solid rgba(255, 193, 7, 0.6);
       color: #ffe28a;
       border-radius: 14px;
-      padding: 15px;
-      margin-bottom: 20px;
+      padding: 14px;
+      margin-bottom: 18px;
       text-align: center;
       font-weight: bold;
     }
@@ -90,56 +87,58 @@
     }
 
     th, td {
-      padding: 14px;
+      padding: 12px;
       text-align: left;
       border-bottom: 1px solid rgba(255,255,255,0.15);
+      vertical-align: middle;
     }
 
     th {
       background: rgba(255,255,255,0.15);
     }
 
-    tr.today {
-      background: rgba(0, 198, 255, 0.25);
+    tr.current {
+      background: rgba(0, 198, 255, 0.24);
     }
 
-    tr.completed {
-      opacity: 0.65;
-      text-decoration: line-through;
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
     button {
       border: none;
-      border-radius: 12px;
-      padding: 9px 13px;
+      border-radius: 10px;
+      padding: 8px 10px;
       cursor: pointer;
       font-weight: bold;
     }
 
-    .complete-btn {
-      background: #2ecc71;
-      color: white;
+    .btn-name { background: #2ecc71; color: white; }
+    .btn-both { background: #f1c40f; color: #1d1d1d; }
+    .btn-reset { background: #ff4757; color: white; width: 100%; margin-top: 14px; }
+    .btn-admin { background: #ffffff; color: #1d3557; width: 100%; margin-top: 10px; }
+
+    .done {
+      font-weight: bold;
+      color: #8fffb3;
     }
 
-    .reset-btn {
-      background: #ff4757;
-      color: white;
-      width: 100%;
-      margin-top: 15px;
+    .mini {
+      color: #d5e7ff;
+      font-size: 14px;
+      line-height: 1.5;
     }
 
-    .side-title {
-      font-size: 22px;
-      margin-top: 0;
-    }
-
-    .person {
+    .team {
       display: flex;
       justify-content: space-between;
       background: rgba(255,255,255,0.1);
       margin-bottom: 10px;
       padding: 12px;
       border-radius: 12px;
+      gap: 8px;
     }
 
     .badge {
@@ -147,39 +146,88 @@
       padding: 5px 9px;
       border-radius: 20px;
       font-size: 13px;
+      white-space: nowrap;
     }
 
-    .quote {
-      margin-top: 20px;
-      background: rgba(255,255,255,0.1);
-      padding: 15px;
-      border-radius: 14px;
-      font-style: italic;
-      color: #eaf2ff;
+    .product {
+      margin-bottom: 16px;
     }
 
-    .mini {
-      color: #cfe3ff;
+    .product-top {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 7px;
       font-size: 14px;
     }
 
+    .bar-bg {
+      width: 100%;
+      height: 12px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 50%;
+      background: linear-gradient(90deg, #2ecc71, #f1c40f, #ff4757);
+      border-radius: 999px;
+    }
+
+    .product-buttons {
+      display: flex;
+      gap: 7px;
+      margin-top: 7px;
+    }
+
+    .small-btn {
+      flex: 1;
+      background: rgba(255,255,255,0.18);
+      color: white;
+    }
+
+    .money-box {
+      background: rgba(255,255,255,0.1);
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+    }
+
+    .money-main {
+      font-size: 24px;
+      font-weight: bold;
+      color: #8fffb3;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+    }
+
+    .admin-panel {
+      display: none;
+      margin-top: 12px;
+    }
+
+    .note {
+      background: rgba(255,255,255,0.1);
+      padding: 12px;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
+
     @media (max-width: 850px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      header h1 {
-        font-size: 26px;
-      }
-
-      .names {
-        font-size: 22px;
-      }
-
-      th, td {
-        font-size: 14px;
-        padding: 10px;
-      }
+      .grid { grid-template-columns: 1fr; }
+      header h1 { font-size: 25px; }
+      .names { font-size: 21px; }
+      th, td { font-size: 13px; padding: 9px; }
+      .btn-row { flex-direction: column; }
     }
   </style>
 </head>
@@ -188,63 +236,90 @@
   <div class="container">
     <header>
       <h1>🧹 Calendario de Limpieza Familiar</h1>
-      <p>Turnos automáticos cada miércoles y sábado</p>
+      <p>Turnos cada miércoles y sábado</p>
     </header>
 
     <div class="grid">
       <main>
-        <div id="todayBox" class="today-box"></div>
+        <div id="todayBox" class="hero"></div>
         <div id="reminderBox" class="warning"></div>
 
         <div class="card">
-          <h2>📅 Próximos turnos</h2>
+          <h2>📅 Turnos de limpieza</h2>
           <table>
             <thead>
               <tr>
                 <th>Fecha</th>
                 <th>Día</th>
                 <th>Responsables</th>
-                <th>Estado</th>
+                <th>Registro</th>
               </tr>
             </thead>
             <tbody id="scheduleTable"></tbody>
           </table>
 
-          <button class="reset-btn" onclick="resetCompleted()">Reiniciar completados</button>
+          <button class="btn-reset" onclick="resetCleaning()">Reiniciar registros de limpieza</button>
         </div>
       </main>
 
       <aside>
         <div class="card">
-          <h2 class="side-title">👨‍👩‍👧‍👦 Parejas</h2>
+          <h2>👨‍👩‍👧‍👦 Parejas</h2>
 
-          <div class="person">
-            <span>Yoban - Maribel</span>
-            <span class="badge">Equipo 1</span>
-          </div>
-
-          <div class="person">
-            <span>Marco - Estuardo</span>
-            <span class="badge">Equipo 2</span>
-          </div>
-
-          <div class="person">
-            <span>Wilmer - Norma</span>
-            <span class="badge">Equipo 3</span>
-          </div>
-
-          <div class="person">
-            <span>Artemio - Magdalena</span>
-            <span class="badge">Equipo 4</span>
-          </div>
-
-          <div class="quote">
-            “Una casa limpia se siente más tranquila. Gracias por ayudar.” ✨
-          </div>
+          <div class="team"><span>Yoban - Maribel</span><span class="badge">Equipo 1</span></div>
+          <div class="team"><span>Marco - Estuardo</span><span class="badge">Equipo 2</span></div>
+          <div class="team"><span>Wilmer - Norma</span><span class="badge">Equipo 3</span></div>
+          <div class="team"><span>Artemio - Magdalena</span><span class="badge">Equipo 4</span></div>
 
           <p class="mini">
-  🧹 La limpieza puede realizarse en pareja o de manera individual. Si una persona completa la limpieza, el siguiente turno continuará según el calendario establecido.
-</p>
+            🧹 La limpieza puede hacerse individualmente o en pareja. Si solo una persona cumple con el turno, la otra tendrá prioridad en la siguiente limpieza.
+          </p>
+        </div>
+
+        <div class="card">
+          <h2>📦 Productos por revisar</h2>
+          <div id="productsList"></div>
+        </div>
+
+        <div class="card">
+          <h2>💰 Fondo de limpieza</h2>
+
+          <div class="money-box">
+            <p class="mini">Saldo disponible</p>
+            <div id="saldoText" class="money-main">$0.00</div>
+          </div>
+
+          <div class="money-box">
+            <p class="mini">Última compra</p>
+            <div id="compraText" class="money-main">$0.00</div>
+          </div>
+
+          <div class="money-box">
+            <p class="mini">Corresponde por persona</p>
+            <div id="personaText" class="money-main">$0.00</div>
+          </div>
+
+          <button class="btn-admin" onclick="openAdmin()">Editar fondo</button>
+
+          <div id="adminPanel" class="admin-panel">
+            <label>Saldo disponible</label>
+            <input id="saldoInput" type="number" step="0.01">
+
+            <label>Última compra</label>
+            <input id="compraInput" type="number" step="0.01">
+
+            <label>Número de personas</label>
+            <input id="personasInput" type="number" step="1">
+
+            <button class="btn-admin" onclick="saveMoney()">Guardar cambios</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>📝 Notas de la casa</h2>
+          <div class="note">
+            🚿 Cambiar la cortina cuando sea necesario.
+          </div>
         </div>
       </aside>
     </div>
@@ -252,16 +327,42 @@
 
   <script>
     const teams = [
-      "Yoban - Maribel",
-      "Marco - Estuardo",
-      "Wilmer - Norma",
-      "Artemio - Magdalena"
+      ["Yoban", "Maribel"],
+      ["Marco", "Estuardo"],
+      ["Wilmer", "Norma"],
+      ["Artemio", "Magdalena"]
     ];
 
     const startDate = new Date(2026, 4, 6); 
-    // 6 de mayo 2026 = Yoban - Maribel
-
     const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+
+    const products = [
+      ["🧴", "Cloro"],
+      ["🍽️", "Lavaplatos"],
+      ["🗑️", "Bolsas de basura"],
+      ["🧻", "Papel higiénico"],
+      ["🍴", "Servilletas"],
+      ["🧽", "Fabuloso"],
+      ["🚿", "Cortina de baño"],
+      ["🧤", "Guantes"],
+      ["🪣", "Mapo"]
+    ];
+
+    function cleanDate(date) {
+      const d = new Date(date);
+      d.setHours(0, 0, 0, 0);
+      return d;
+    }
+
+    function sameDay(a, b) {
+      return a.getFullYear() === b.getFullYear() &&
+             a.getMonth() === b.getMonth() &&
+             a.getDate() === b.getDate();
+    }
+
+    function isCleaningDay(date) {
+      return date.getDay() === 3 || date.getDay() === 6;
+    }
 
     function formatDate(date) {
       return date.toLocaleDateString("es-US", {
@@ -271,70 +372,86 @@
       });
     }
 
-    function isCleaningDay(date) {
-      return date.getDay() === 3 || date.getDay() === 6;
+    function isoDate(date) {
+      return date.toISOString().split("T")[0];
     }
 
-    function sameDay(a, b) {
-      return a.getFullYear() === b.getFullYear() &&
-             a.getMonth() === b.getMonth() &&
-             a.getDate() === b.getDate();
-    }
-
-    function getCleaningDates(count) {
+    function getAllCleaningDates(limit = 250) {
       const dates = [];
-      const date = new Date(startDate);
+      const date = cleanDate(startDate);
 
-      while (dates.length < 200) {
-        if (isCleaningDay(date)) {
-          dates.push(new Date(date));
-        }
+      while (dates.length < limit) {
+        if (isCleaningDay(date)) dates.push(new Date(date));
         date.setDate(date.getDate() + 1);
       }
 
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      return dates;
+    }
 
-      return dates.filter(d => d >= today).slice(0, count);
+    function getTeamIndexForDate(date) {
+      const allDates = getAllCleaningDates(250);
+      const index = allDates.findIndex(d => sameDay(d, date));
+      return index % teams.length;
     }
 
     function getTeamForDate(date) {
-      let index = 0;
-      const temp = new Date(startDate);
+      return teams[getTeamIndexForDate(date)];
+    }
 
-      while (temp <= date) {
-        if (isCleaningDay(temp)) {
-          if (sameDay(temp, date)) {
-            return teams[index % teams.length];
-          }
-          index++;
-        }
-        temp.setDate(temp.getDate() + 1);
+    function getDisplayPeople(date) {
+      const team = getTeamForDate(date);
+      const previousPending = localStorage.getItem("pending-" + team.join("-"));
+
+      if (previousPending && team.includes(previousPending)) {
+        return [previousPending];
       }
+
+      return team;
     }
 
-    function completedKey(date) {
-      return "completed-" + date.toISOString().split("T")[0];
+    function getCurrentTurnDate() {
+      const today = cleanDate(new Date());
+      const allDates = getAllCleaningDates(250);
+      let current = allDates[0];
+
+      for (const d of allDates) {
+        if (d <= today) current = d;
+        else break;
+      }
+
+      return current;
     }
 
-    function toggleCompleted(dateString) {
-      const key = "completed-" + dateString;
-      const current = localStorage.getItem(key);
+    function getVisibleDates() {
+      const allDates = getAllCleaningDates(250);
+      const current = getCurrentTurnDate();
+      const startIndex = allDates.findIndex(d => sameDay(d, current));
+      return allDates.slice(startIndex, startIndex + 8);
+    }
 
-      if (current === "yes") {
-        localStorage.removeItem(key);
+    function markCleaner(dateIso, cleaner) {
+      const date = cleanDate(new Date(dateIso + "T00:00:00"));
+      const team = getTeamForDate(date);
+      const key = "cleaned-" + dateIso;
+      const pendingKey = "pending-" + team.join("-");
+
+      localStorage.setItem(key, cleaner);
+
+      if (cleaner === "Ambos") {
+        localStorage.removeItem(pendingKey);
       } else {
-        localStorage.setItem(key, "yes");
+        const pendingPerson = team.find(person => person !== cleaner);
+        localStorage.setItem(pendingKey, pendingPerson);
       }
 
       render();
     }
 
-    function resetCompleted() {
-      if (!confirm("¿Seguro que quieres reiniciar los turnos completados?")) return;
+    function resetCleaning() {
+      if (!confirm("¿Seguro que quieres reiniciar los registros de limpieza?")) return;
 
       Object.keys(localStorage).forEach(key => {
-        if (key.startsWith("completed-")) {
+        if (key.startsWith("cleaned-") || key.startsWith("pending-")) {
           localStorage.removeItem(key);
         }
       });
@@ -342,66 +459,173 @@
       render();
     }
 
-    function render() {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      const nextDates = getCleaningDates(12);
-      const todayCleaning = nextDates.find(d => sameDay(d, today));
-      const nextCleaning = nextDates[0];
-
-      const todayBox = document.getElementById("todayBox");
-      const reminderBox = document.getElementById("reminderBox");
+    function renderSchedule() {
+      const today = cleanDate(new Date());
+      const currentTurn = getCurrentTurnDate();
+      const visibleDates = getVisibleDates();
       const table = document.getElementById("scheduleTable");
-
-      if (todayCleaning) {
-        todayBox.innerHTML = `
-          <h2>🧹 Hoy toca limpieza</h2>
-          <div class="names">${getTeamForDate(todayCleaning)}</div>
-          <p>${formatDate(todayCleaning)}</p>
-        `;
-      } else {
-        todayBox.innerHTML = `
-          <h2>✅ Hoy no toca limpieza</h2>
-          <div class="names">Próximo: ${getTeamForDate(nextCleaning)}</div>
-          <p>${formatDate(nextCleaning)}</p>
-        `;
-      }
-
-      const tomorrow = new Date(today);
-      tomorrow.setDate(tomorrow.getDate() + 1);
-
-      const tomorrowCleaning = nextDates.find(d => sameDay(d, tomorrow));
-
-      if (tomorrowCleaning) {
-        reminderBox.innerHTML = `⚠️ Mañana le toca limpieza a: ${getTeamForDate(tomorrowCleaning)}`;
-      } else {
-        reminderBox.innerHTML = `📌 Recordatorio: la limpieza solo es miércoles y sábado.`;
-      }
 
       table.innerHTML = "";
 
-      nextDates.forEach(date => {
-        const iso = date.toISOString().split("T")[0];
-        const isCompleted = localStorage.getItem("completed-" + iso) === "yes";
+      visibleDates.forEach(date => {
+        const team = getTeamForDate(date);
+        const displayPeople = getDisplayPeople(date);
+        const dateIso = isoDate(date);
+        const cleaned = localStorage.getItem("cleaned-" + dateIso);
+
         const tr = document.createElement("tr");
 
-        if (sameDay(date, today)) tr.classList.add("today");
-        if (isCompleted) tr.classList.add("completed");
+        if (sameDay(date, currentTurn)) {
+          tr.classList.add("current");
+        }
+
+        let buttons = "";
+
+        if (cleaned) {
+          buttons = `<span class="done">✅ ${cleaned}</span>`;
+        } else {
+          if (displayPeople.length === 1) {
+            buttons = `
+              <div class="btn-row">
+                <button class="btn-name" onclick="markCleaner('${dateIso}', '${displayPeople[0]}')">${displayPeople[0]}</button>
+              </div>
+            `;
+          } else {
+            buttons = `
+              <div class="btn-row">
+                <button class="btn-name" onclick="markCleaner('${dateIso}', '${team[0]}')">${team[0]}</button>
+                <button class="btn-name" onclick="markCleaner('${dateIso}', '${team[1]}')">${team[1]}</button>
+                <button class="btn-both" onclick="markCleaner('${dateIso}', 'Ambos')">Ambos</button>
+              </div>
+            `;
+          }
+        }
 
         tr.innerHTML = `
           <td>${formatDate(date)}</td>
           <td>${days[date.getDay()]}</td>
-          <td>${getTeamForDate(date)}</td>
-          <td>
-            <button class="complete-btn" onclick="toggleCompleted('${iso}')">
-              ${isCompleted ? "✅ Completado" : "Marcar ✅"}
-            </button>
-          </td>
+          <td>${displayPeople.join(" - ")}</td>
+          <td>${buttons}</td>
         `;
 
         table.appendChild(tr);
       });
+    }
+
+    function renderTop() {
+      const currentTurn = getCurrentTurnDate();
+      const today = cleanDate(new Date());
+      const displayPeople = getDisplayPeople(currentTurn);
+      const todayBox = document.getElementById("todayBox");
+      const reminderBox = document.getElementById("reminderBox");
+
+      if (sameDay(currentTurn, today)) {
+        todayBox.innerHTML = `
+          <h2>🧹 Hoy toca limpieza</h2>
+          <div class="names">${displayPeople.join(" - ")}</div>
+          <p>${formatDate(currentTurn)}</p>
+        `;
+      } else {
+        todayBox.innerHTML = `
+          <h2>🧹 Último turno pendiente</h2>
+          <div class="names">${displayPeople.join(" - ")}</div>
+          <p>${formatDate(currentTurn)}</p>
+        `;
+      }
+
+      const visibleDates = getVisibleDates();
+      const nextTurn = visibleDates[1];
+
+      if (nextTurn) {
+        reminderBox.innerHTML = `📌 Próximo turno: ${getDisplayPeople(nextTurn).join(" - ")} — ${formatDate(nextTurn)}`;
+      }
+    }
+
+    function renderProducts() {
+      const box = document.getElementById("productsList");
+      box.innerHTML = "";
+
+      products.forEach(([icon, name]) => {
+        const key = "product-" + name;
+        let value = localStorage.getItem(key);
+
+        if (value === null) {
+          value = 100;
+          localStorage.setItem(key, value);
+        }
+
+        value = Number(value);
+
+        const div = document.createElement("div");
+        div.className = "product";
+
+        div.innerHTML = `
+          <div class="product-top">
+            <span>${icon} ${name}</span>
+            <strong>${value}%</strong>
+          </div>
+          <div class="bar-bg">
+            <div class="bar-fill" style="width:${value}%"></div>
+          </div>
+          <div class="product-buttons">
+            <button class="small-btn" onclick="changeProduct('${name}', -10)">➖</button>
+            <button class="small-btn" onclick="changeProduct('${name}', 10)">➕</button>
+          </div>
+        `;
+
+        box.appendChild(div);
+      });
+    }
+
+    function changeProduct(name, amount) {
+      const key = "product-" + name;
+      let value = Number(localStorage.getItem(key) || 100);
+      value += amount;
+      if (value > 100) value = 100;
+      if (value < 0) value = 0;
+      localStorage.setItem(key, value);
+      renderProducts();
+    }
+
+    function openAdmin() {
+      const pin = prompt("Ingresa el PIN de administrador:");
+      if (pin !== "1234") {
+        alert("PIN incorrecto");
+        return;
+      }
+
+      document.getElementById("adminPanel").style.display = "block";
+      document.getElementById("saldoInput").value = localStorage.getItem("saldo") || 0;
+      document.getElementById("compraInput").value = localStorage.getItem("compra") || 0;
+      document.getElementById("personasInput").value = localStorage.getItem("personas") || 8;
+    }
+
+    function saveMoney() {
+      localStorage.setItem("saldo", Number(document.getElementById("saldoInput").value || 0));
+      localStorage.setItem("compra", Number(document.getElementById("compraInput").value || 0));
+      localStorage.setItem("personas", Number(document.getElementById("personasInput").value || 8));
+      renderMoney();
+      alert("Fondo actualizado");
+    }
+
+    function renderMoney() {
+      const saldo = Number(localStorage.getItem("saldo") || 0);
+      const compra = Number(localStorage.getItem("compra") || 0);
+      const personas = Number(localStorage.getItem("personas") || 8);
+
+      const totalARecaudar = Math.max(compra - saldo, 0);
+      const porPersona = personas > 0 ? totalARecaudar / personas : 0;
+
+      document.getElementById("saldoText").textContent = "$" + saldo.toFixed(2);
+      document.getElementById("compraText").textContent = "$" + compra.toFixed(2);
+      document.getElementById("personaText").textContent = "$" + porPersona.toFixed(2);
+    }
+
+    function render() {
+      renderTop();
+      renderSchedule();
+      renderProducts();
+      renderMoney();
     }
 
     render();
