@@ -326,7 +326,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC5kqj_P1PTWs-SsymosBppQArmHDHUA3s",
@@ -623,10 +623,16 @@ function renderTop() {
       document.getElementById("personasInput").value = localStorage.getItem("personas") || 8;
     }
 
-    function saveMoney() {
+    async function saveMoney() {
       localStorage.setItem("saldo", Number(document.getElementById("saldoInput").value || 0));
       localStorage.setItem("compra", Number(document.getElementById("compraInput").value || 0));
       localStorage.setItem("personas", Number(document.getElementById("personasInput").value || 8));
+
+      await setDoc(doc(db, "config", "general"), {
+    saldo: Number(document.getElementById("saldoInput").value || 0),
+    ultimaCompra: Number(document.getElementById("compraInput").value || 0),
+    personas: Number(document.getElementById("personasInput").value || 8)
+});
       renderMoney();
       alert("Fondo actualizado");
     }
