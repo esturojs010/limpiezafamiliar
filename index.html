@@ -326,7 +326,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC5kqj_P1PTWs-SsymosBppQArmHDHUA3s",
@@ -637,7 +637,16 @@ function renderTop() {
       alert("Fondo actualizado");
     }
 
-    function renderMoney() {
+    async function renderMoney() {
+      const snap = await getDoc(doc(db, "config", "general"));
+
+if (snap.exists()) {
+    const data = snap.data();
+
+    localStorage.setItem("saldo", data.saldo ?? 0);
+    localStorage.setItem("compra", data.ultimaCompra ?? 0);
+    localStorage.setItem("personas", data.personas ?? 8);
+}
       const saldo = Number(localStorage.getItem("saldo") || 0);
       const compra = Number(localStorage.getItem("compra") || 0);
       const personas = Number(localStorage.getItem("personas") || 8);
