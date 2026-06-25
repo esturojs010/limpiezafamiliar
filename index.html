@@ -324,7 +324,23 @@
     </div>
   </div>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC5kqj_P1PTWs-SsymosBppQArmHDHUA3s",
+  authDomain: "limpieza-familiar-e0f25.firebaseapp.com",
+  projectId: "limpieza-familiar-e0f25",
+  storageBucket: "limpieza-familiar-e0f25.firebasestorage.app",
+  messagingSenderId: "434172712061",
+  appId: "1:434172712061:web:e3d9ecafabc12749da4d14"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+console.log("✅ Firebase conectado");
     const teams = [
       ["Yoban", "Maribel"],
       ["Marco", "Estuardo"],
