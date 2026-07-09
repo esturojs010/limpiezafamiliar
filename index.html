@@ -362,7 +362,7 @@ console.log("✅ Firebase conectado");
       ["🧤", "Guantes"],
       ["🪣", "Mapo"]
     ];
-
+let productLevels = {};
     function cleanDate(date) {
       const d = new Date(date);
       d.setHours(0, 0, 0, 0);
@@ -570,7 +570,11 @@ function renderTop() {
 
       products.forEach(([icon, name]) => {
         const key = "product-" + name;
-        let value = localStorage.getItem(key);
+let value = productLevels[name];
+
+if (value === undefined) {
+    value = localStorage.getItem(key);
+}
 
         if (value === null) {
           value = 100;
@@ -600,13 +604,20 @@ function renderTop() {
       });
     }
 
-    function changeProduct(name, amount) {
+    async function changeProduct(name, amount) {
       const key = "product-" + name;
-      let value = Number(localStorage.getItem(key) || 100);
+
+let value = productLevels[name];
+
+if (value === undefined) {
+    value = Number(localStorage.getItem(key) || 100);
+}
       value += amount;
       if (value > 100) value = 100;
       if (value < 0) value = 0;
-      localStorage.setItem(key, value);
+      productLevels[name] = value;
+localStorage.setItem(key, value);
+await setDoc(doc(db, "config", "productos"), productLevels);
       renderProducts();
     }
 
@@ -658,12 +669,21 @@ if (snap.exists()) {
       document.getElementById("compraText").textContent = "$" + compra.toFixed(2);
       document.getElementById("personaText").textContent = "$" + porPersona.toFixed(2);
     }
+async function loadProductsFromFirebase() {
+    const snap = await getDoc(doc(db, "config", "productos"));
 
-    function render() {
-      renderTop();
-      renderSchedule();
-      renderProducts();
-      renderMoney();
+    if (snap.exists()) {
+        productLevels = snap.data();
+    }
+
+    renderProducts();
+}
+    async function render() {
+    renderTop();
+    renderSchedule();
+    await loadProductsFromFirebase();
+    await renderMoney();
+
     }
 window.markCleaner = markCleaner;
 window.resetCleaning = resetCleaning;
