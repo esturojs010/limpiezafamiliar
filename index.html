@@ -444,23 +444,35 @@ let productLevels = {};
       return allDates.slice(startIndex, startIndex + 8);
     }
 
-    function markCleaner(dateIso, cleaner) {
-      const date = cleanDate(new Date(dateIso + "T00:00:00"));
-      const team = getTeamForDate(date);
-      const key = "cleaned-" + dateIso;
-      const pendingKey = "pending-" + team.join("-");
+    async function markCleaner(dateIso, cleaner) {
+    const date = cleanDate(new Date(dateIso + "T00:00:00"));
+    const team = getTeamForDate(date);
+    const key = "cleaned-" + dateIso;
+    const pendingKey = "pending-" + team.join("-");
 
-      localStorage.setItem(key, cleaner);
+    localStorage.setItem(key, cleaner);
 
-      if (cleaner === "Ambos") {
+    await setDoc(doc(db, "cleaning", dateIso), {
+        cleaner: cleaner
+    });
+
+    if (cleaner === "Ambos") {
         localStorage.removeItem(pendingKey);
-      } else {
+
+        await setDoc(doc(db, "pending", team.join("-")), {
+            person: ""
+        });
+    } else {
         const pendingPerson = team.find(person => person !== cleaner);
         localStorage.setItem(pendingKey, pendingPerson);
-      }
 
-      render();
+        await setDoc(doc(db, "pending", team.join("-")), {
+            person: pendingPerson
+        });
     }
+
+    render();
+}
 
     function resetCleaning() {
       if (!confirm("¿Seguro que quieres reiniciar los registros de limpieza?")) return;
@@ -678,13 +690,43 @@ async function loadProductsFromFirebase() {
 
     renderProducts();
 }
+    async function loadCleaningFromFirebase() {
+    const allDates = getAllCleaningDates(250);
+
+    for (const date of allDates) {
+        const dateIso = date.toISOString().split("T")[0];
+
+        const cleaningSnap = await getDoc(doc(db, "cleaning", dateIso));
+
+        if (cleaningSnap.exists()) {
+            localStorage.setItem("cleaned-" + dateIso, cleaningSnap.data().cleaner);
+        }
+
+        const team = getTeamForDate(date);
+        const pendingKey = team.join("-");
+
+        const pendingSnap = await getDoc(doc(db, "pending", pendingKey));
+
+        if (pendingSnap.exists()) {
+            if (pendingSnap.data().person) {
+                localStorage.setItem("pending-" + pendingKey, pendingSnap.data().person);
+            } else {
+                localStorage.removeItem("pending-" + pendingKey);
+            }
+        }
+    }
+}
     async function render() {
+    await loadCleaningFromFirebase();
+
     renderTop();
     renderSchedule();
+
     await loadProductsFromFirebase();
     await renderMoney();
+}
 
-    }
+
 window.markCleaner = markCleaner;
 window.resetCleaning = resetCleaning;
 window.changeProduct = changeProduct;
