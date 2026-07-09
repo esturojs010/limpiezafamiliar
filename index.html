@@ -474,7 +474,7 @@ let productLevels = {};
     render();
 }
 
-    function resetCleaning() {
+    async function resetCleaning()
       if (!confirm("¿Seguro que quieres reiniciar los registros de limpieza?")) return;
 
       Object.keys(localStorage).forEach(key => {
@@ -482,7 +482,21 @@ let productLevels = {};
           localStorage.removeItem(key);
         }
       });
+const allDates = getAllCleaningDates(250);
 
+for (const date of allDates) {
+    const dateIso = isoDate(date);
+
+    await setDoc(doc(db, "cleaning", dateIso), {
+        cleaner: ""
+    });
+
+    const team = getTeamForDate(date);
+
+    await setDoc(doc(db, "pending", team.join("-")), {
+        person: ""
+    });
+}
       render();
     }
 
