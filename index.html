@@ -404,12 +404,12 @@ let productLevels = {};
     }
 
     function getTeamIndexForDate(date) {
-      const allDates = getVisibleDates();
+      const allDates = getAllCleaningDates(250);
       const index = allDates.findIndex(d => sameDay(d, date));
       return index % teams.length;
     }
 
-    function getTeamForDate(date) {
+    function getDisplayPeople(
       return teams[getTeamIndexForDate(date)];
     }
 
