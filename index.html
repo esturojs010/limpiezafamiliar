@@ -404,7 +404,7 @@ let productLevels = {};
     }
 
     function getTeamIndexForDate(date) {
-      const allDates = getAllCleaningDates(250);
+      const allDates = getVisibleDates();
       const index = allDates.findIndex(d => sameDay(d, date));
       return index % teams.length;
     }
