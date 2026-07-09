@@ -691,7 +691,7 @@ async function loadProductsFromFirebase() {
     renderProducts();
 }
     async function loadCleaningFromFirebase() {
-    const allDates = getAllCleaningDates(250);
+    const allDates = getVisibleDates();
 
     for (const date of allDates) {
         const dateIso = date.toISOString().split("T")[0];
