@@ -474,31 +474,33 @@ let productLevels = {};
     render();
 }
 
-    async function resetCleaning()
-      if (!confirm("¿Seguro que quieres reiniciar los registros de limpieza?")) return;
+    async function resetCleaning() {
+    if (!confirm("¿Seguro que quieres reiniciar los registros de limpieza?")) return;
 
-      Object.keys(localStorage).forEach(key => {
+    Object.keys(localStorage).forEach(key => {
         if (key.startsWith("cleaned-") || key.startsWith("pending-")) {
-          localStorage.removeItem(key);
+            localStorage.removeItem(key);
         }
-      });
-const allDates = getAllCleaningDates(250);
-
-for (const date of allDates) {
-    const dateIso = isoDate(date);
-
-    await setDoc(doc(db, "cleaning", dateIso), {
-        cleaner: ""
     });
 
-    const team = getTeamForDate(date);
+    const allDates = getVisibleDates();
 
-    await setDoc(doc(db, "pending", team.join("-")), {
-        person: ""
-    });
-}
-      render();
+    for (const date of allDates) {
+        const dateIso = isoDate(date);
+
+        await setDoc(doc(db, "cleaning", dateIso), {
+            cleaner: ""
+        });
+
+        const team = getTeamForDate(date);
+
+        await setDoc(doc(db, "pending", team.join("-")), {
+            person: ""
+        });
     }
+
+    render();
+}
 
     function renderSchedule() {
       const today = cleanDate(new Date());
