@@ -700,7 +700,8 @@ if (snap.exists()) {
       document.getElementById("personaText").textContent = "$" + porPersona.toFixed(2);
     }
 function loadProductsFromFirebase() {
-
+if (loadProductsFromFirebase.started) return;
+loadProductsFromFirebase.started = true;
     onSnapshot(doc(db, "config", "productos"), (snap) => {
 
         if (snap.exists()) {
@@ -738,12 +739,12 @@ function loadProductsFromFirebase() {
     }
 }
     async function render() {
-    await loadCleaningFromFirebase();
+    loadCleaningFromFirebase();
 
     renderTop();
     renderSchedule();
 
-    await loadProductsFromFirebase();
+    loadProductsFromFirebase();
     await renderMoney();
 }
 
