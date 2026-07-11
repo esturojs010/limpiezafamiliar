@@ -404,25 +404,28 @@ let productLevels = {};
     }
 
     function getTeamIndexForDate(date) {
-      const allDates = getAllCleaningDates(250);
-      const index = allDates.findIndex(d => sameDay(d, date));
-      return index % teams.length;
-    }
+    const allDates = getAllCleaningDates(250);
+    const index = allDates.findIndex(d => sameDay(d, date));
 
-    function getDisplayPeople(
-      return teams[getTeamIndexForDate(date)];
-    }
+    return index % teams.length;
+}
 
-    function getDisplayPeople(date) {
-      const team = getTeamForDate(date);
-      const previousPending = localStorage.getItem("pending-" + team.join("-"));
+function getTeamForDate(date) {
+    return teams[getTeamIndexForDate(date)];
+}
 
-      if (previousPending && team.includes(previousPending)) {
+function getDisplayPeople(date) {
+    const team = getTeamForDate(date);
+    const previousPending = localStorage.getItem(
+        "pending-" + team.join("-")
+    );
+
+    if (previousPending && team.includes(previousPending)) {
         return [previousPending];
-      }
-
-      return team;
     }
+
+    return team;
+}
 
     function getCurrentTurnDate() {
       const today = cleanDate(new Date());
