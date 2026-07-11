@@ -314,6 +314,12 @@
           </div>
         </div>
 
+       <div class="card">
+    <h2>📜 Últimos movimientos</h2>
+    <div id="historyList">
+        Cargando historial...
+    </div>
+</div>
         <div class="card">
           <h2>📝 Notas de la casa</h2>
           <div class="note">
@@ -326,7 +332,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-    import { getFirestore, doc, setDoc, getDoc, onSnapshot, addDoc, collection } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, getDocs, onSnapshot, addDoc, collection } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyC5kqj_P1PTWs-SsymosBppQArmHDHUA3s",
   authDomain: "limpieza-familiar-e0f25.firebaseapp.com",
@@ -766,6 +772,42 @@ loadProductsFromFirebase.started = true;
         }
     }
 }
+    async function loadHistory() {
+    const historyList = document.getElementById("historyList");
+    if (!historyList) return;
+
+    const snap = await getDocs(collection(db, "history"));
+
+    const items = [];
+
+    snap.forEach(doc => {
+        items.push(doc.data());
+    });
+
+    items.sort((a, b) =>
+        new Date(b.actionTime) - new Date(a.actionTime)
+    );
+
+    historyList.innerHTML = "";
+
+    items.slice(0, 2).forEach(item => {
+        const div = document.createElement("div");
+
+        div.className = "note";
+
+        div.innerHTML = `
+            <b>${item.cleaner}</b><br>
+            📅 ${item.cleaningDate}<br>
+            🕒 ${new Date(item.actionTime).toLocaleString()}
+        `;
+
+        historyList.appendChild(div);
+    });
+
+    if (items.length === 0) {
+        historyList.innerHTML = "Sin historial";
+    }
+}
     async function render() {
     loadCleaningFromFirebase();
 
@@ -774,6 +816,7 @@ loadProductsFromFirebase.started = true;
 
     loadProductsFromFirebase();
     await renderMoney();
+    await loadHistory();
 }
 
 
