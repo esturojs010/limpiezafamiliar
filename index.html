@@ -326,8 +326,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
-
+    import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyC5kqj_P1PTWs-SsymosBppQArmHDHUA3s",
   authDomain: "limpieza-familiar-e0f25.firebaseapp.com",
@@ -700,14 +699,17 @@ if (snap.exists()) {
       document.getElementById("compraText").textContent = "$" + compra.toFixed(2);
       document.getElementById("personaText").textContent = "$" + porPersona.toFixed(2);
     }
-async function loadProductsFromFirebase() {
-    const snap = await getDoc(doc(db, "config", "productos"));
+function loadProductsFromFirebase() {
 
-    if (snap.exists()) {
-        productLevels = snap.data();
-    }
+    onSnapshot(doc(db, "config", "productos"), (snap) => {
 
-    renderProducts();
+        if (snap.exists()) {
+            productLevels = snap.data();
+            renderProducts();
+        }
+
+    });
+
 }
     async function loadCleaningFromFirebase() {
     const allDates = getVisibleDates();
