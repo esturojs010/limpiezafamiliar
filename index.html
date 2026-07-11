@@ -326,7 +326,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-    import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDoc, onSnapshot, addDoc, collection } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyC5kqj_P1PTWs-SsymosBppQArmHDHUA3s",
   authDomain: "limpieza-familiar-e0f25.firebaseapp.com",
@@ -447,6 +447,12 @@ function getDisplayPeople(date) {
     }
 
     async function markCleaner(dateIso, cleaner) {
+      const message =
+    cleaner === "Ambos"
+        ? "¿Confirmas que ambos completaron la limpieza?"
+        : `¿Estás seguro de marcar a ${cleaner}?`;
+
+if (!confirm(message)) return;
     const date = cleanDate(new Date(dateIso + "T00:00:00"));
     const team = getTeamForDate(date);
     const key = "cleaned-" + dateIso;
@@ -457,7 +463,11 @@ function getDisplayPeople(date) {
     await setDoc(doc(db, "cleaning", dateIso), {
         cleaner: cleaner
     });
-
+await addDoc(collection(db, "history"), {
+    cleaner: cleaner,
+    cleaningDate: dateIso,
+    actionTime: new Date().toISOString()
+});
     if (cleaner === "Ambos") {
         localStorage.removeItem(pendingKey);
 
