@@ -563,10 +563,14 @@ await addDoc(collection(db, "history"), {
 
             <button
     class="btn-name"
-    onclick="markCleaner(
-        '${dateIso}',
-        document.getElementById('cleaner-${dateIso}').value
-    )"
+    onclick="
+        const selected = document.getElementById('cleaner-${dateIso}').value;
+        if (!selected) {
+            alert('Primero selecciona quién realizó la limpieza');
+        } else {
+            markCleaner('${dateIso}', selected);
+        }
+    "
 >
     Registrar
 </button>
