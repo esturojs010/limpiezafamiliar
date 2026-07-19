@@ -265,7 +265,12 @@
             <tbody id="scheduleTable"></tbody>
           </table>
 
-          <button class="btn-reset" onclick="resetCleaning()">Reiniciar registros de limpieza</button>
+          <button
+    id="resetButton"
+    class="btn-reset"
+    onclick="resetCleaning()">
+    Reiniciar registros de limpieza
+</button>
         </div>
       </main>
 
@@ -858,6 +863,8 @@ loadProductsFromFirebase.started = true;
     loadProductsFromFirebase();
     await renderMoney();
     await loadHistory();
+      document.getElementById("resetButton").style.display =
+    isAdmin ? "block" : "none";
 }
 
 
