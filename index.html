@@ -562,22 +562,15 @@ await addDoc(collection(db, "history"), {
             </select>
 
             <button
-                class="btn-name"
-                onclick="
-                    const selected = document.getElementById('cleaner-${dateIso}').value;
-                    if (!selected) {
-                        alert('Selecciona quién realizó la limpieza');
-                    } else {
-                        markCleaner('${dateIso}', selected);
-                    }
-                "
-            >
-                Registrar
-            </button>
-        </div>
-    `;
-}
-
+    class="btn-name"
+    onclick="markCleaner(
+        '${dateIso}',
+        document.getElementById('cleaner-${dateIso}').value
+    )"
+>
+    Registrar
+</button>
+        
         tr.innerHTML = `
           <td>${formatDate(date)}</td>
           <td>${days[date.getDay()]}</td>
