@@ -585,7 +585,19 @@ await addDoc(collection(db, "history"), {
         table.appendChild(tr);
       });
     }
+function renderCurrentDate() {
+    const label = document.getElementById("currentDateLabel");
+    if (!label) return;
 
+    const today = new Date();
+
+    label.textContent = `📅 Hoy: ${today.toLocaleDateString("es-US", {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+    })}`;
+}
+    
 function renderTop() {
   const currentTurn = getCurrentTurnDate();
   const today = cleanDate(new Date());
@@ -826,6 +838,7 @@ loadProductsFromFirebase.started = true;
 
     renderTop();
     renderSchedule();
+    renderCurrentDate();
 
     loadProductsFromFirebase();
     await renderMoney();
