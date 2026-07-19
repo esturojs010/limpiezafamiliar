@@ -551,16 +551,32 @@ await addDoc(collection(db, "history"), {
                 <button class="btn-name" onclick="markCleaner('${dateIso}', '${displayPeople[0]}')">${displayPeople[0]}</button>
               </div>
             `;
-          } else {
-            buttons = `
-              <div class="btn-row">
-                <button class="btn-name" onclick="markCleaner('${dateIso}', '${team[0]}')">${team[0]}</button>
-                <button class="btn-name" onclick="markCleaner('${dateIso}', '${team[1]}')">${team[1]}</button>
-                <button class="btn-both" onclick="markCleaner('${dateIso}', 'Ambos')">Ambos</button>
-              </div>
-            `;
-          }
-        }
+} else {
+    buttons = `
+        <div class="btn-row">
+            <select id="cleaner-${dateIso}" class="cleaner-select">
+                <option value="">Seleccionar...</option>
+                <option value="${team[0]}">${team[0]}</option>
+                <option value="${team[1]}">${team[1]}</option>
+                <option value="Ambos">Ambos</option>
+            </select>
+
+            <button
+                class="btn-name"
+                onclick="
+                    const selected = document.getElementById('cleaner-${dateIso}').value;
+                    if (!selected) {
+                        alert('Selecciona quién realizó la limpieza');
+                    } else {
+                        markCleaner('${dateIso}', selected);
+                    }
+                "
+            >
+                Registrar
+            </button>
+        </div>
+    `;
+}
 
         tr.innerHTML = `
           <td>${formatDate(date)}</td>
