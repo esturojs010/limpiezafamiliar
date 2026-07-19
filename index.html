@@ -449,7 +449,7 @@ function getDisplayPeople(date) {
       const allDates = getAllCleaningDates(250);
       const current = getCurrentTurnDate();
       const startIndex = allDates.findIndex(d => sameDay(d, current));
-      return allDates.slice(startIndex, startIndex + 8);
+      return allDates.slice(startIndex, startIndex + 4);
     }
 
     async function markCleaner(dateIso, cleaner) {
