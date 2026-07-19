@@ -124,6 +124,11 @@
       font-weight: bold;
       color: #8fffb3;
     }
+    .future-label {
+    color: #ffd76a;
+    font-weight: bold;
+    font-style: italic;
+   }
 
     .mini {
       color: #d5e7ff;
@@ -538,10 +543,20 @@ await addDoc(collection(db, "history"), {
         }
 
         let buttons = "";
+        const today = cleanDate(new Date());
+const isFuture = date > today;
 
         if (cleaned) {
-          buttons = `<span class="done">✅ ${cleaned}</span>`;
-        } else {
+    buttons = `<span class="done">✅ ${cleaned}</span>`;
+}
+else if (isFuture) {
+    buttons = `
+        <span class="future-label">
+            ⏳ Disponible el ${formatDate(date)}
+        </span>
+    `;
+}
+else {
           if (displayPeople.length === 1) {
             buttons = `
               <div class="btn-row">
