@@ -774,48 +774,59 @@ loadProductsFromFirebase.started = true;
 
 }
     function loadCleaningFromFirebase() {
+
     if (loadCleaningFromFirebase.started) return;
     loadCleaningFromFirebase.started = true;
 
-    const allDates = getVisibleDates();
-    const pendingListeners = new Set();
+    // Escuchar TODOS los registros de limpieza en tiempo real
+    onSnapshot(collection(db, "cleaning"), (snapshot) => {
 
-    for (const date of allDates) {
-        const dateIso = isoDate(date);
-
-        onSnapshot(doc(db, "cleaning", dateIso), (snap) => {
-            const key = "cleaned-" + dateIso;
-
-            if (snap.exists() && snap.data().cleaner) {
-                localStorage.setItem(key, snap.data().cleaner);
-            } else {
+        // Primero eliminamos los registros locales de limpieza
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith("cleaned_")) {
                 localStorage.removeItem(key);
             }
-
-            renderTop();
-            renderSchedule();
         });
 
-        const team = getTeamForDate(date);
-        const pendingKey = team.join("-");
+        // Guardamos lo que existe actualmente en Firebase
+        snapshot.forEach(docSnap => {
+            const data = docSnap.data();
 
-        if (!pendingListeners.has(pendingKey)) {
-            pendingListeners.add(pendingKey);
+            if (data.cleaner) {
+                localStorage.setItem(
+                    "cleaned_" + docSnap.id,
+                    data.cleaner
+                );
+            }
+        });
 
-            onSnapshot(doc(db, "pending", pendingKey), (snap) => {
-                const key = "pending-" + pendingKey;
+        renderTop();
+        renderSchedule();
+    });
 
-                if (snap.exists() && snap.data().person) {
-                    localStorage.setItem(key, snap.data().person);
-                } else {
-                    localStorage.removeItem(key);
-                }
+    // Escuchar también los pendientes
+    onSnapshot(collection(db, "pending"), (snapshot) => {
 
-                renderTop();
-                renderSchedule();
-            });
-        }
-    }
+        Object.keys(localStorage).forEach(key => {
+            if (key.startsWith("pending_")) {
+                localStorage.removeItem(key);
+            }
+        });
+
+        snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+
+            if (data.person) {
+                localStorage.setItem(
+                    "pending_" + docSnap.id,
+                    data.person
+                );
+            }
+        });
+
+        renderTop();
+        renderSchedule();
+    });
 }
     async function loadHistory() {
     const historyList = document.getElementById("historyList");
