@@ -779,31 +779,37 @@ loadProductsFromFirebase.started = true;
     loadCleaningFromFirebase.started = true;
 
     // Escuchar TODOS los registros de limpieza en tiempo real
-    onSnapshot(collection(db, "cleaning"), (snapshot) => {
-      console.log("🔥 Cambio recibido desde Firebase:", snapshot.size);
+    onSnapshot(
+  collection(db, "cleaning"),
 
-        // Primero eliminamos los registros locales de limpieza
-        Object.keys(localStorage).forEach(key => {
-            if (key.startsWith("cleaned_")) {
-                localStorage.removeItem(key);
-            }
-        });
+  (snapshot) => {
+    console.log("🔥 CAMBIO REAL:", new Date().toLocaleTimeString(), snapshot.size);
 
-        // Guardamos lo que existe actualmente en Firebase
-        snapshot.forEach(docSnap => {
-            const data = docSnap.data();
-
-            if (data.cleaner) {
-                localStorage.setItem(
-                    "cleaned_" + docSnap.id,
-                    data.cleaner
-                );
-            }
-        });
-
-        renderTop();
-        renderSchedule();
+    Object.keys(localStorage).forEach(key => {
+      if (key.startsWith("cleaned_")) {
+        localStorage.removeItem(key);
+      }
     });
+
+    snapshot.forEach(docSnap => {
+      const data = docSnap.data();
+
+      if (data.cleaner) {
+        localStorage.setItem(
+          "cleaned_" + docSnap.id,
+          data.cleaner
+        );
+      }
+    });
+
+    renderTop();
+    renderSchedule();
+  },
+
+  (error) => {
+    console.error("❌ LISTENER FIREBASE SE CERRÓ:", error.code, error.message);
+  }
+);
 
     // Escuchar también los pendientes
     onSnapshot(collection(db, "pending"), (snapshot) => {
