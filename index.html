@@ -780,6 +780,7 @@ loadProductsFromFirebase.started = true;
 
     // Escuchar TODOS los registros de limpieza en tiempo real
     onSnapshot(collection(db, "cleaning"), (snapshot) => {
+      console.log("🔥 Cambio recibido desde Firebase:", snapshot.size);
 
         // Primero eliminamos los registros locales de limpieza
         Object.keys(localStorage).forEach(key => {
