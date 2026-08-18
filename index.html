@@ -623,6 +623,9 @@ function renderTop() {
   const today = cleanDate(new Date());
   const team = getTeamForDate(currentTurn);
   const cleaned = localStorage.getItem("cleaned-" + isoDate(currentTurn));
+  console.log("🧪 currentTurn:", currentTurn);
+console.log("🧪 isoDate(currentTurn):", isoDate(currentTurn));
+console.log("🧪 cleaned que lee renderTop:", cleaned);
 
   const todayBox = document.getElementById("todayBox");
   const reminderBox = document.getElementById("reminderBox");
