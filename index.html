@@ -540,13 +540,7 @@ await addDoc(collection(db, "history"), {
         const team = getTeamForDate(date);
         const displayPeople = getDisplayPeople(date);
         const dateIso = isoDate(date);
-        const cleaned = localStorage.getItem("cleaned-" + dateIso);
-        console.log(
-    "📋 renderSchedule:",
-    dateIso,
-    "=>",
-    cleaned
-);
+        const cleaned = cleaningState[dateIso] || null;
 
         const tr = document.createElement("tr");
 
@@ -629,14 +623,7 @@ function renderTop() {
   const currentTurn = getCurrentTurnDate();
   const today = cleanDate(new Date());
   const team = getTeamForDate(currentTurn);
-  const cleanedKey = "cleaned_" + isoDate(currentTurn);
-const cleaned = localStorage.getItem(cleanedKey);
-
-console.log("🔑 Clave que busca renderTop:", JSON.stringify(cleanedKey));
-console.log("🧹 Claves cleaning guardadas:",
-    Object.keys(localStorage).filter(key => key.startsWith("cleaned_"))
-);
-console.log("✅ Valor encontrado:", cleaned);
+  const cleaned = cleaningState[isoDate(currentTurn)] || null;
 
   const todayBox = document.getElementById("todayBox");
   const reminderBox = document.getElementById("reminderBox");
@@ -802,12 +789,12 @@ loadProductsFromFirebase.started = true;
     snapshot.docChanges().forEach(change => {
     const docSnap = change.doc;
     const data = docSnap.data();
-    const key = "cleaned_" + docSnap.id;
+    const dateIso = docSnap.id;
 
     if (change.type === "removed" || !data.cleaner) {
-        localStorage.removeItem(key);
+        delete cleaningState[dateIso];
     } else {
-        localStorage.setItem(key, data.cleaner);
+        cleaningState[dateIso] = data.cleaner;
     }
 });
 
