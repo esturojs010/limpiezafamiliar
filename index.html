@@ -798,22 +798,17 @@ loadProductsFromFirebase.started = true;
   (snapshot) => {
     console.log("🔥 CAMBIO REAL:", new Date().toLocaleTimeString(), snapshot.size);
 
-    Object.keys(localStorage).forEach(key => {
-      if (key.startsWith("cleaned_")) {
+    snapshot.docChanges().forEach(change => {
+    const docSnap = change.doc;
+    const data = docSnap.data();
+    const key = "cleaned_" + docSnap.id;
+
+    if (change.type === "removed" || !data.cleaner) {
         localStorage.removeItem(key);
-      }
-    });
-
-    snapshot.forEach(docSnap => {
-      const data = docSnap.data();
-
-      if (data.cleaner) {
-        localStorage.setItem(
-          "cleaned_" + docSnap.id,
-          data.cleaner
-        );
-      }
-    });
+    } else {
+        localStorage.setItem(key, data.cleaner);
+    }
+});
 
     console.log(
     "🧪 Valor local del 15:",
