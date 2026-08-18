@@ -501,8 +501,15 @@ await addDoc(collection(db, "history"), {
 }
 
     async function resetCleaning() {
-    if (!confirm("¿Seguro que quieres reiniciar los registros de limpieza?")) return;
 
+    const codigo = prompt("🔒 Ingresa el código de administrador:");
+
+    if (codigo !== "2580") {
+        alert("❌ Código incorrecto");
+        return;
+    }
+
+    if (!confirm("⚠️ ¿Seguro que quieres reiniciar los registros de limpieza?")) return;
     Object.keys(localStorage).forEach(key => {
         if (key.startsWith("cleaned-") || key.startsWith("pending-")) {
             localStorage.removeItem(key);
