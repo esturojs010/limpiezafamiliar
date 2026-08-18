@@ -540,6 +540,12 @@ await addDoc(collection(db, "history"), {
         const displayPeople = getDisplayPeople(date);
         const dateIso = isoDate(date);
         const cleaned = localStorage.getItem("cleaned-" + dateIso);
+        console.log(
+    "📋 renderSchedule:",
+    dateIso,
+    "=>",
+    cleaned
+);
 
         const tr = document.createElement("tr");
 
