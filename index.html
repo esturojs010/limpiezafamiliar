@@ -622,10 +622,14 @@ function renderTop() {
   const currentTurn = getCurrentTurnDate();
   const today = cleanDate(new Date());
   const team = getTeamForDate(currentTurn);
-  const cleaned = localStorage.getItem("cleaned-" + isoDate(currentTurn));
-  console.log("🧪 currentTurn:", currentTurn);
-console.log("🧪 isoDate(currentTurn):", isoDate(currentTurn));
-console.log("🧪 cleaned que lee renderTop:", cleaned);
+  const cleanedKey = "cleaned_" + isoDate(currentTurn);
+const cleaned = localStorage.getItem(cleanedKey);
+
+console.log("🔑 Clave que busca renderTop:", JSON.stringify(cleanedKey));
+console.log("🧹 Claves cleaning guardadas:",
+    Object.keys(localStorage).filter(key => key.startsWith("cleaned_"))
+);
+console.log("✅ Valor encontrado:", cleaned);
 
   const todayBox = document.getElementById("todayBox");
   const reminderBox = document.getElementById("reminderBox");
