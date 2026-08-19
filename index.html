@@ -147,6 +147,14 @@ background-attachment: fixed;
     font-style: italic;
    }
 
+    .loading-next {
+    text-align: center;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    font-style: italic;
+    padding: 14px;
+}
+
     .mini {
       color: #d5e7ff;
       font-size: 14px;
@@ -556,7 +564,7 @@ await addDoc(collection(db, "history"), {
     function renderSchedule() {
       const today = cleanDate(new Date());
       const currentTurn = getCurrentTurnDate();
-      const visibleDates = getVisibleDates();
+      const visibleDates = getVisibleDates().slice(0, 3);
       const table = document.getElementById("scheduleTable");
 
       table.innerHTML = "";
@@ -630,6 +638,16 @@ else {
 
         table.appendChild(tr);
       });
+    
+    const loadingRow = document.createElement("tr");
+
+loadingRow.innerHTML = `
+    <td colspan="4" class="loading-next">
+        ⏳ Cargando próximo turno...
+    </td>
+`;
+
+table.appendChild(loadingRow);
     }
 function renderCurrentDate() {
     const label = document.getElementById("currentDateLabel");
