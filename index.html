@@ -858,29 +858,20 @@ loadProductsFromFirebase.started = true;
     // Escuchar también los pendientes
     onSnapshot(collection(db, "pending"), (snapshot) => {
 
-        Object.keys(localStorage).forEach(key => {
-            if (key.startsWith("pending_")) {
-                localStorage.removeItem(key);
-            }
-        });
+        // Limpiar el estado anterior
+pendingState = {};
 
-        snapshot.forEach(docSnap => {
-            const data = docSnap.data();
-
-snapshot.docChanges().forEach(change => {
-    const docSnap = change.doc;
+// Guardar en memoria lo que viene de Firebase
+snapshot.forEach(docSnap => {
     const data = docSnap.data();
-    const key = docSnap.id;
 
-    if (change.type === "removed" || !data.person) {
-        delete pendingState[key];
-    } else {
-        pendingState[key] = data.person;
+    if (data.person) {
+        pendingState[docSnap.id] = data.person;
     }
 });
 
-        renderTop();
-        renderSchedule();
+renderTop();
+renderSchedule();
     });
 }
     async function loadHistory() {
