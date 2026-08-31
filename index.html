@@ -263,6 +263,28 @@ background-attachment: fixed;
 </head>
 
 <body>
+  <body>
+
+<div id="maintenanceScreen" style="
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    background:rgba(0,0,0,0.95);
+    color:white;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:30px;
+">
+    <div>
+        <h1>🛠️ Página en mantenimiento</h1>
+        <p>Estamos realizando algunos ajustes.</p>
+        <p>Volveremos pronto.</p>
+    </div>
+</div>
+
+<div class="container">
   <div class="container">
 <header>
   <h1>🏡 El Hogar</h1>
@@ -364,6 +386,16 @@ background-attachment: fixed;
   </div>
 
   <script type="module">
+const maintenanceMode = true;
+
+const params = new URLSearchParams(window.location.search);
+const adminMode = params.get("admin") === "2580";
+
+if (maintenanceMode && !adminMode) {
+    document.getElementById("maintenanceScreen").style.display = "flex";
+    document.body.style.overflow = "hidden";
+}
+    
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
     import { getFirestore, doc, setDoc, getDoc, getDocs, onSnapshot, addDoc, collection } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 const firebaseConfig = {
