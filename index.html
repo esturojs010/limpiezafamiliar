@@ -497,6 +497,7 @@ if (!confirm(message)) return;
     const team = getTeamForDate(date);
     const key = "cleaned-" + dateIso;
     const pendingKey = "pending-" + team.join("-");
+      const currentPending = pendingState[team.join("-")] || null;
 
     localStorage.setItem(key, cleaner);
 
@@ -508,22 +509,26 @@ await addDoc(collection(db, "history"), {
     cleaningDate: dateIso,
     actionTime: new Date().toISOString()
 });
-    if (cleaner === "Ambos") {
-        localStorage.removeItem(pendingKey);
+    if (cleaner === "Ambos" || cleaner === currentPending) {
 
-        await setDoc(doc(db, "pending", team.join("-")), {
-            person: ""
-        });
-    } else {
-        const pendingPerson = team.find(person => person !== cleaner);
-        localStorage.setItem(pendingKey, pendingPerson);
+    // Ambos limpiaron, o la persona con prioridad cumplió
+    localStorage.removeItem(pendingKey);
 
-        await setDoc(doc(db, "pending", team.join("-")), {
-            person: pendingPerson
-        });
-    }
+    await setDoc(doc(db, "pending", team.join("-")), {
+        person: ""
+    });
 
-    render();
+} else {
+
+    // Solo una persona limpió:
+    // la otra obtiene prioridad
+    const pendingPerson = team.find(person => person !== cleaner);
+
+    localStorage.setItem(pendingKey, pendingPerson);
+
+    await setDoc(doc(db, "pending", team.join("-")), {
+        person: pendingPerson
+    });
 }
 
     async function resetCleaning() {
