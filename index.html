@@ -283,8 +283,14 @@ background-attachment: fixed;
         <p>Volveremos pronto.</p>
     </div>
 </div>
+<script>
+    const params = new URLSearchParams(window.location.search);
 
-<div class="container">
+    if (params.get("admin") === "2580") {
+        document.getElementById("maintenanceScreen").style.display = "none";
+    }
+</script>
+
   <div class="container">
 <header>
   <h1>🏡 El Hogar</h1>
@@ -386,15 +392,7 @@ background-attachment: fixed;
   </div>
 
   <script type="module">
-const maintenanceMode = true;
 
-const params = new URLSearchParams(window.location.search);
-const adminMode = params.get("admin") === "2580";
-
-if (maintenanceMode && !adminMode) {
-    document.getElementById("maintenanceScreen").style.display = "flex";
-    document.body.style.overflow = "hidden";
-}
     
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
     import { getFirestore, doc, setDoc, getDoc, getDocs, onSnapshot, addDoc, collection } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
