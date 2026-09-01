@@ -604,10 +604,13 @@ await addDoc(collection(db, "history"), {
       table.innerHTML = "";
 
       visibleDates.forEach(date => {
-        const team = getTeamForDate(date);
-        const displayPeople = getDisplayPeople(date);
-        const dateIso = isoDate(date);
-        const cleaned = cleaningState[dateIso] || null;
+  const team = getTeamForDate(date);
+  const dateIso = isoDate(date);
+  const cleaned = cleaningState[dateIso] || null;
+
+  const displayPeople = cleaned
+    ? (cleaned === "Ambos" ? team : [cleaned])
+    : getDisplayPeople(date);
 
         const tr = document.createElement("tr");
 
